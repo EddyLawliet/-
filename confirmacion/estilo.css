@@ -1,12 +1,12 @@
 :root {
     --color-primary: #007BFF; 
-    --color-secondary: #17A2B8; 
+    --color-secondary: #17A2B8;
     --color-tertiary: rgb(20, 65, 117); 
     --color-background: #F8F9FA; 
     --color-form-bg: #E9ECEF; 
-    --color-table-bg: #FFFFFF; 
-    --color-text: #343A40;
-    --color-border: #007BFF;
+    --color-table-bg: #FFFFFF;
+    --color-text: #343A40; 
+    --color-border: #007BFF; 
     --spacing-unit: 1rem;
     --border-radius: 0.5rem;
     --transition-normal: 0.3s ease;
@@ -45,22 +45,12 @@ h3 {
     
 }
 
-/* Mensajes de feedback (eliminar opcional) */
-.mensaje {
-    color: #4CAF50;
-    text-align: center;
-    padding: var(--spacing-unit);
-    margin-bottom: var(--spacing-unit);
-    border-radius: var(--border-radius);
-    animation: fadeOut 5s var(--transition-normal);
-}
-
 /* Formularios */
 .form-container {
-    width: 100%; 
+    width: 150%; 
     padding: 20px;
     background-color: #e3f2fd;
-    border-radius: 8px;
+    border-radius: 0px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 form {
@@ -132,11 +122,8 @@ button:focus-visible {
 
 /* Tabla */
 .table-container {
-    position: fixed;
-    top: 20px; 
-    right: 20px; 
-    width: 68%;
-    height: calc(100vh - 40px);
+    position: relative;
+    height: calc(65vh - 20px);
     overflow-y: auto;
     background-color: #e3f2fd; 
     border-left: 1px solid #ccc;
@@ -161,6 +148,29 @@ table {
     border-spacing: 0;
     margin-bottom: var(--spacing-unit);
 }
+.tabla {
+    position: fixed;
+    top: 20px; 
+    right: 20px; 
+    width: 50%;
+    height: calc(100vh - 40px);
+    overflow-y: auto;
+    background-color: #e3f2fd; 
+    border-left: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: -2px 0px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tabla table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.tabla {
+    margin-top: var(--spacing-unit);
+    overflow-x: auto;
+    border-radius: var(--border-radius);
+    background-color: var(--color-table-bg);
+}
 
 th, td {
     padding: 0.75rem;
@@ -173,6 +183,10 @@ th {
     color: var(--color-text);
     font-weight: 600;
     white-space: nowrap;
+}
+
+td {
+    white-space: nowrap; /* Evita que los botones se rompan en líneas separadas */
 }
 
 tr:hover {
@@ -190,6 +204,44 @@ tr:hover {
     clip: rect(0, 0, 0, 0);
     border: 0;
 }
+
+#confirmacionTable thead tr {
+    position: sticky;
+    top: 0;
+    z-index: 1; /* Asegura que esté encima de otras filas si hay scroll */
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 0 5px; /* Espaciado entre botones */
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilo para el botón "Eliminar" */
+.btnEliminar {
+    background-color: #e74c3c; /* Rojo */
+}
+
+.btnEliminar:hover {
+    background-color: #c0392b; /* Rojo oscuro */
+}
+
+/* Estilo para el botón "PDF" */
+.btn-pdf {
+    background-color: #3498db; /* Azul */
+}
+
+.btn-pdf:hover {
+    background-color: #2980b9; /* Azul oscuro */
+}
+
 
 /* Media queries para responsividad */
 @media (max-width: 768px) {

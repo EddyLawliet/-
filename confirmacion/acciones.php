@@ -1,33 +1,23 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = ""; 
-$dbname = "parroquia";
-
-// Crear conexión
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
-}
+include 'conexion.php';
 
 // Eliminar un registro del formulario
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['accion']) && $_POST['accion'] == "eliminar") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == "eliminar") {
     $id = $_POST['id'];
-
     // Comprobar que el ID no esté vacío
     if (!empty($id)) {
         $stmt = $conn->prepare("DELETE FROM Confirmacion WHERE Id = ?");
         $stmt->bind_param("i", $id);
-
         if ($stmt->execute()) {
             echo "Registro eliminado correctamente.";
         } else {
             echo "Error al eliminar el registro.";
         }
-
         $stmt->close();
+    } else {
+        echo "ID inválido.";
     }
+    $conn->close();
     exit();
 }
 
@@ -67,36 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     $stmt->execute();
     $stmt->close();
+    $conn->close();
 }
 
-// Obtener datos para la tabla
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    $result = $conn->query("SELECT * FROM confirmacion");
-    while ($row = $result->fetch_assoc()) {
-        echo "<tr>";
-        echo "<td>{$row['Id']}</td>";
-        echo "<td>{$row['ApellidoPaterno']}</td>";
-        echo "<td>{$row['ApellidoMaterno']}</td>";
-        echo "<td>{$row['Nombre']}</td>";
-        echo "<td>{$row['Hij']}</td>";
-        echo "<td>{$row['NombrePadre']}</td>";
-        echo "<td>{$row['NombreMadre']}</td>";
-        echo "<td>{$row['FechaConfirmacion']}</td>";
-        echo "<td>{$row['Confirmador']}</td>";
-        echo "<td>{$row['NombrePadrinoMadrina']}</td>";
-        echo "<td>{$row['PadrinoMadrina1']}</td>";
-        echo "<td>{$row['PadrinoMadrina2']}</td>";
-        echo "<td>{$row['Certificador']}</td>";
-        echo "<td>{$row['Libro']}</td>";
-        echo "<td>{$row['Pagina']}</td>";
-        echo "<td>{$row['Nro']}</td>";
-        echo "<td>{$row['Iglesia']}</td>";
-        echo "<td>{$row['NotasMarginales']}</td>";
-        echo "<td>{$row['FechaExpedida']}</td>";
-        echo "<td><button class='btnEliminar' data-id='" . $row['Id'] . "'>Eliminar</button></td>";
-        echo "<td><input type='checkbox' class='seleccionarRegistro' value='" . $row['Id'] . "'></td>";
-        echo "</tr>";
-    }
-}
-$conn->close();
 ?>

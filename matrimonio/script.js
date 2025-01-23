@@ -1,8 +1,13 @@
 $(document).ready(function() {
-    cargarDatos(); 
-
     //funcion para buscar por datos
     $("#search").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#matrimonioTable tbody tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
+    });
+
+    $("#search2").on("keyup", function() {
         var value = $(this).val().toLowerCase();
         $("#matrimonioTable tbody tr").filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
@@ -25,7 +30,6 @@ $(document).ready(function() {
             type: "POST",
             data: $(this).serialize() + '&action=' + actionType,  // Agrega 'action' al dato enviado
             success: function(response) {
-                cargarDatos();
                 alert("Registro " + (actionType == 'insertar' ? "guardado" : "actualizado") + " exitosamente.");
                 $("#matrimonioForm")[0].reset();
             },
@@ -35,28 +39,37 @@ $(document).ready(function() {
         });
     });
 
+    $(document).on("click", ".btnEliminar", function() {
+        var id = $(this).data("id");
+        var row = $(this).closest("tr");
+
+        if (confirm("¿Está seguro de eliminar este registro?")) {
+            $.ajax({
+                url: "acciones.php",
+                type: "POST",
+                data: { action: 'eliminar', id: id },
+                success: function(response) {
+                    row.remove();
+                    alert("Registro eliminado exitosamente.");
+                },
+                error: function() {
+                    alert("Error al eliminar el registro.");
+                }
+            });
+        }
+    });
+
     // Evento para generar el PDF
-    $("#btnGenerarPDF").on("click", function() {
-    const seleccionado = $("input[type='checkbox']:checked");
-
-        if (seleccionado.length === 0) {
-            alert("Por favor, ponga el ✓ al fineal de la fila para generar el PDF");
-            return;
-        }
-        const id = seleccionado.val();
-        window.location.href = "generar_pdf.php?id=" + id;
-    });
-    // Evento para generar el PDF del registro seleccionado
-    $("#btnPrint").on("click", function() {
-        const seleccionado = $("input[type='checkbox']:checked");
-
-        if (seleccionado.length === 0) {
-            alert("Por favor, selecciona un registro para generar la Impresión.");
-            return;
-        }
-        const id = seleccionado.val();
-        window.location.href = "PrintMatrimonio.php?id=" + id;
-    });
+    //$("#btnGenerarPDF").on("click", function() {
+    //const seleccionado = $("input[type='checkbox']:checked");
+    //
+    //    if (seleccionado.length === 0) {
+    //        alert("Por favor, ponga el ✓ al fineal de la fila para generar el PDF");
+    //        return;
+    //    }
+    //    const id = seleccionado.val();
+    //    window.location.href = "generar_pdf.php?id=" + id;
+    //});
 
     // Evento para seleccionar una fila
     $(document).on("click", "tbody tr", function() {
@@ -90,35 +103,33 @@ $(document).ready(function() {
         $("#fechaExpedida").val(cells.eq(26).text());
     });
 
+    $('#modal').click(function() {
+        // Actualizar los valores de los campos del modal con los datos del formulario
+        $('#apellidoNombreEsposoModal').text($('#apellidoNombreEsposo').val());
+        $('#apellidoNombreEsposaModal').text($('#apellidoNombreEsposa').val());
+        $('#lugarMatrimonioModal').text($('#lugarMatrimonio').val());
+        $('#fechaMatrimonioModal').text($('#fechaMatrimonio').val());
+        $('#bautizadoParroquiaEsposoModal').text($('#bautizadoParroquiaEsposo').val());
+        $('#bautizadaParroquiaEsposaModal').text($('#bautizadaParroquiaEsposa').val());
+        $('#padreEsposoModal').text($('#padreEsposo').val());
+        $('#madreEsposoModal').text($('#madreEsposo').val());
+        $('#padreEsposaModal').text($('#padreEsposa').val());
+        $('#madreEsposaModal').text($('#madreEsposa').val());
+        $('#padrinoModal').text($('#padrino').val());
+        $('#madrinaModal').text($('#madrina').val());
+        $('#iglesiaModal').text($('#iglesia').val());
+        $('#presbiteroModal').text($('#presbítero').val());
+        $('#libroMModal').text($('#libroM').val());
+        $('#paginaMModal').text($('#paginaM').val());
+        $('#partidaMModal').text($('#partidaM').val());
+        $('#lugarMatrimonioCivilModal').text($('#lugarMatrimonioCivil').val());
+        $('#fechaMatrimonioCivilModal').text($('#fechaMatrimonioCivil').val());
+        $('#oficialiaModal').text($('#oficialiaRegistroCivil').val());
+        $('#libroModal').text($('#libro').val());
+        $('#partidaModal').text($('#partida').val());
+        $('#certificaModal').text($('#certifica').val());
+        $('#notasMarginalesModal').text($('#notasMarginales').val());
+        $('#lugarExpedidoModal').text($('#lugarExpedido').val());
+        $('#fechaExpedidaModal').text($('#fechaExpedida').val());
+    });
 });
-
-function cargarDatos() {
-    $.ajax({
-        url: "acciones.php",
-        type: "GET",
-        success: function(response) {
-            $("tbody").html(response);
-            $(".btnEliminar").on("click", function() {
-                let id = $(this).data("id");
-                if (confirm("¿Estás seguro de que deseas eliminar este registro?")) {
-                    eliminarRegistro(id);
-                }
-            });
-        }
-    });
-}
-
-function eliminarRegistro(id) {
-    $.ajax({
-        url: "acciones.php",
-        type: "POST",
-        data: { id: id, accion: "eliminar" },
-        success: function(response) {
-            cargarDatos();
-            alert("Registro eliminado exitosamente.");
-        },
-        error: function() {
-            alert("Error al eliminar el registro.");
-        }
-    });
-}

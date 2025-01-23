@@ -72,7 +72,6 @@ $(document).ready(function() {
     //    window.location.href = "PrintBautismo.php?id=" + id;
     // });
 
-
     // Evento para seleccionar una fila
     $(document).on("click", "tbody tr", function() {
         var cells = $(this).children("td");
