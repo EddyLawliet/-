@@ -1,6 +1,16 @@
 <?php
-require('fpdf186/fpdf.php');
-include('conexion.php');
+require('../library/fpdf186/fpdf.php');
+include('../conexion.php');
+
+function getMesEnEspanol($mesIngles) {
+	$meses = [
+		'January' => 'Enero', 'February' => 'Febrero', 'March' => 'Marzo',
+		'April' => 'Abril', 'May' => 'Mayo', 'June' => 'Junio',
+		'July' => 'Julio', 'August' => 'Agosto', 'September' => 'Septiembre',
+		'October' => 'Octubre', 'November' => 'Noviembre', 'December' => 'Diciembre'
+	];
+	return $meses[$mesIngles];
+}
 
 if (isset($_GET['id'])) {
 	$id = $_GET['id'];
@@ -13,144 +23,57 @@ if (isset($_GET['id'])) {
 
 	if ($result->num_rows > 0) {
 		$row = $result->fetch_assoc();
-	
-		// Crear un nuevo PDF con tamaño de hoja A4
+
 		$pdf = new FPDF('P', 'mm', 'A4');
 		$pdf->AddPage();
 		$pdf->SetFont('Arial', '', 12);
-		//$pdf->SetFont('Arial', 'B', 14);
-	
-		/* // Agregar contenido al PDF
-		$pdf->SetXY(10, 10); // 10 mm desde el borde superior
-		$pdf->Cell(0, 10, 'Detalles del Registro de Bautismo', 0, 1, 'C');
-		$pdf->Ln(10); // 10 mm de espacio */
-	
-		// Mostrar los datos del registro
-		/* $pdf->SetX(10); // 10 mm desde el borde izquierdo
-		$pdf->Cell(50, 10, 'ID:', 0, 0); // 50 mm de ancho
-		$pdf->Cell(50, 10, $row['Id'], 0, 1); // 50 mm de ancho
-	
-		$pdf->SetX(10);
-		$pdf->Cell(50, 10, 'Presbitero:', 0, 0); */
-		/* 
-		$pdf->Cell(50, 10, 'Parroquia:', 0, 0);
-		$pdf->SetX(92);
-		$pdf->Cell(50, 60, $row['Parroquia'], 0, 1); */
 
-		//$pdf->Cell(50, 10, 'Iglesia:', 0, 0);
-		$pdf->SetXY(92, 60);
-		$pdf->Cell(0, 10, $row['Iglesia'], 0, 1);
-		//$pdf->Ln(10); // 10 mm de espacio
-		$pdf->SetXY(82.6, 68.8);
-		$pdf->Cell(0, 10, $row['Presbítero'], 0, 1);
+		// You can change this value to move all positions up (+) or down (-)
+		$yOffset = 0; 
 		
-		//$pdf->Cell(50, 10, 'Libro:', 0, 0);
-		$pdf->SetXY(170, 76);
-		$pdf->Cell(0, 10, $row['LibroB'], 0, 1);
-	
-		//$pdf->Cell(50, 10, 'Pagina:', 0, 0);
-		$pdf->SetXY(44.7, 83);
-		$pdf->Cell(0, 10, $row['PaginaB'], 0, 1);
-	
-		//$pdf->Cell(50, 10, 'Partida:', 0, 0);
-		$pdf->SetXY(88, 83);
-		$pdf->Cell(0, 10, $row['PartidaB'], 0, 1);
+		// You can change this value to move all positions left (-) or right (+)
+		$xOffset = 0; 
 
-		//$pdf->SetXY(43, 96);
-		$pdf->SetXY(43, 96);
-		$pdf->Cell(0, 10, $row['ApellidoPaterno'], 0, 1);
-	
-		//$pdf->Cell(50, 10, 'Apellido Materno:', 0, 0);
-		$pdf->SetXY(89, 96);
-		$pdf->Cell(0, 10, $row['ApellidoMaterno'], 0, 1);
-	
-		//$pdf->Cell(50, 10, 'Nombre:', 0, 0);
-		$pdf->SetXY(141, 96);
-		$pdf->Cell(0, 10, $row['Nombre'], 0, 1);
-	
-		//$pdf->Cell(50, 10, 'Lugar de Bautismo:', 0, 0);
-		$pdf->SetXY(84, 112.5);
-		$pdf->Cell(0, 10, $row['LugarBautismo']." ".$row['FechaBautismo'], 0, 1);
-		
-		/* $pdf->SetXY(10, 120);
-		$pdf->Cell(50, 10, 'Fecha de Bautismo:', 0, 0);
-		$pdf->Cell(50, 10, $row['FechaBautismo'], 0, 1); */
-	
-		//$pdf->Cell(50, 10, 'Lugar de Nacimiento:', 0, 0);
-		$pdf->SetXY(84, 120);
-		$pdf->Cell(0, 10, $row['LugarNacimiento']." ".$row['FechaNacimiento'], 0, 1);
-	
-		/* $pdf->SetXY(10, 132.6);
-		$pdf->Cell(50, 10, 'Fecha de Nacimiento:', 0, 0);
-		$pdf->Cell(50, 10, $row['FechaNacimiento'], 0, 1); */
-		
-		
-		//$pdf->Cell(50, 10, 'FAMILIARES:', 0, 1);
-		//$pdf->Cell(50, 10, 'Padre:', 0, 0);
-		$pdf->SetXY(77.3, 132.6);
-		$pdf->Cell(0, 10, $row['Padre'], 0, 1);
-		
-		
-		//$pdf->Cell(50, 10, 'Madre:', 0, 0);
-		$pdf->SetXY(77.3, 140.2);
-		$pdf->Cell(0, 10, $row['Madre'], 0, 1);
-		
-		
-		//$pdf->Cell(50, 10, 'Padrino:', 0, 0);
-		$pdf->SetXY(77.3, 147.6);
-		$pdf->Cell(0, 10, $row['Padrino'], 0, 1);
-		
-		
-		//$pdf->Cell(50, 10, 'Madrina:', 0, 0);
-		$pdf->SetXY(77.3, 154.8);
-		$pdf->Cell(0, 10, $row['Madrina'], 0, 1);
-		
-		
-		//$pdf->Cell(50, 10, 'OTROS:', 0, 1);
-		//$pdf->Cell(50, 10, 'Oficialia Registro Civil:', 0, 0);
-		$pdf->SetXY(86.3, 164);
-		$pdf->Cell(0, 10, $row['OficialiaRegistroCivil'], 0, 1);
-	
-		$pdf->SetXY(129, 164);
-		$pdf->Cell(0, 10, $row['Libro'], 0, 1);
-	
-		$pdf->SetXY(173, 164);
-		$pdf->Cell(0, 10, $row['Partida'], 0, 1);
-	
-		$pdf->SetXY(97.4, 172);
-		$pdf->Cell(0, 10, $row['Certifica'], 0, 1);
+		$fields = [
+			['x' => 92 + $xOffset, 'y' => 60 + $yOffset, 'value' => $row['Iglesia']],
+			['x' => 82.6 + $xOffset, 'y' => 68.8 + $yOffset, 'value' => $row['Presbitero']],
+			['x' => 170 + $xOffset, 'y' => 76 + $yOffset, 'value' => $row['LibroB']],
+			['x' => 44.7 + $xOffset, 'y' => 83 + $yOffset, 'value' => $row['PaginaB']],
+			['x' => 88 + $xOffset, 'y' => 83 + $yOffset, 'value' => $row['PartidaB']],
+			['x' => 43 + $xOffset, 'y' => 96 + $yOffset, 'value' => $row['ApellidoPaterno']],
+			['x' => 89 + $xOffset, 'y' => 96 + $yOffset, 'value' => $row['ApellidoMaterno']],
+			['x' => 141 + $xOffset, 'y' => 96 + $yOffset, 'value' => $row['Nombre']],
+			['x' => 84 + $xOffset, 'y' => 112.5 + $yOffset, 'value' => $row['LugarBautismo']." ".$row['FechaBautismo']],
+			['x' => 84 + $xOffset, 'y' => 120 + $yOffset, 'value' => $row['LugarNacimiento']." ".$row['FechaNacimiento']],
+			['x' => 77.3, 'y' => 132.6 + $yOffset, 'value' => $row['Padre']],
+			['x' => 77.3, 'y' => 140.2 + $yOffset, 'value' => $row['Madre']],
+			['x' => 77.3, 'y' => 154.8, 'value' => $row['Madrina']],
+			['x' => 86.3, 'y' => 164, 'value' => $row['OficialiaRegistroCivil']],
+			['x' => 129, 'y' => 164, 'value' => $row['Libro']],
+			['x' => 173, 'y' => 164, 'value' => $row['Partida']],
+			['x' => 97.4, 'y' => 172, 'value' => $row['Certifica']],
+			['x' => 82, 'y' => 184.4, 'value' => $row['NotasMarginales']],
+			['x' => 22, 'y' => 229, 'value' => $row['LugarExpedido']],
+		];
 
-		//$pdf->SetXY(10, 184.4);
-		//$pdf->Cell(50, 10, 'Notas Marginales:', 0, 0);
-		$pdf->SetXY(82, 184.4);
-		$pdf->MultiCell(0, 10, $row['NotasMarginales']); // Usar MultiCell para textos más largos
-	
-		//$pdf->Cell(50, 10, 'Fecha Expedida:', 0, 0);
-		$pdf->SetXY(22, 229);
-		$pdf->Cell(0, 10, $row['LugarExpedido'], 0, 1);
-		
+		foreach ($fields as $field) {
+			$pdf->SetXY($field['x'], $field['y']);
+			$pdf->Cell(0, 10, utf8_decode($field['value']), 0, 1);
+		}
+
 		$fechaExpedida = strtotime($row['FechaExpedida']);
-        $dia = date('d', $fechaExpedida);
-        $mes = date('F', $fechaExpedida);
-        $anio = date('Y', $fechaExpedida);
+		$dia = date('d', $fechaExpedida);
+		$mes = getMesEnEspanol(date('F', $fechaExpedida));
+		$anio = date('Y', $fechaExpedida);
 
-        // Convertir el mes a español
-        $meses = array(
-            'January' => 'Enero',
-            'February' => 'Febrero',
-            'March' => 'Marzo',
-            'April' => 'Abril',
-            'May' => 'Mayo',
-            'June' => 'Junio',
-            'July' => 'Julio',
-            'August' => 'Agosto',
-            'September' => 'Septiembre',
-            'October' => 'Octubre',
-            'November' => 'Noviembre',
-            'December' => 'Diciembre'
-        );
-        $mes = $meses[$mes];
+		$pdf->SetXY(49, 229);
+		$pdf->Cell(10, 10, $dia, 0, 1);
+		$pdf->SetXY(78, 229);
+		$pdf->Cell(30, 10, $mes, 0, 1);
+		$pdf->SetXY(123.5, 229);
+		$pdf->Cell(20, 10, $anio, 0, 1);
 
+<<<<<<< HEAD
         // Imprimir día
         $pdf->SetXY(49, 229);
         $pdf->Cell(10, 10, $dia, 0, 1);
@@ -164,11 +87,12 @@ if (isset($_GET['id'])) {
         $pdf->Cell(20, 10, $anio, 0, 1);
 	
 		// Generar el PDF
+=======
+>>>>>>> 49a3c186a6ac46038411f92e4c7a84cce39f13de
 		$pdf->Output('I', 'Registro_' . $row['Id'] . '.pdf');
 	} else {
 		echo "Registro no encontrado.";
 	}
-	
 } else {
 	echo "ID de registro no proporcionado.";
 }

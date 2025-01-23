@@ -1,135 +1,77 @@
 <?php
-require('fpdf186/fpdf.php');
-include('conexion.php');
+require('../library/fpdf186/fpdf.php');
+include('../conexion.php');
+
+function getMesEnEspanol($mesIngles) {
+    $meses = [
+        'January' => 'Enero', 'February' => 'Febrero', 'March' => 'Marzo',
+        'April' => 'Abril', 'May' => 'Mayo', 'June' => 'Junio',
+        'July' => 'Julio', 'August' => 'Agosto', 'September' => 'Septiembre',
+        'October' => 'Octubre', 'November' => 'Noviembre', 'December' => 'Diciembre'
+    ];
+    return $meses[$mesIngles];
+}
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-
-    $sql = "SELECT * FROM Matrimonio WHERE Id = ?";
-    $stmt = $conn->prepare($sql);
+    $stmt = $conn->prepare("SELECT * FROM Matrimonio WHERE Id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-    
-        // Crear un nuevo PDF con tamaño de hoja A4
         $pdf = new FPDF('P', 'mm', 'A4');
         $pdf->AddPage();
         $pdf->SetFont('Arial', '', 12);
 
-        $pdf->SetXY(89.4, 58.5);
-        $pdf->Cell(0, 10, $row['Iglesia'], 0, 1);
+        $fields = [
+            ['x' => 89.4, 'y' => 58.5, 'value' => $row['Iglesia']],
+            ['x' => 72.5, 'y' => 65.9, 'value' => $row['Presbitero']],
+            ['x' => 176.5, 'y' => 73.3, 'value' => $row['LibroM']],
+            ['x' => 41, 'y' => 80, 'value' => $row['PaginaM']],
+            ['x' => 70, 'y' => 80, 'value' => $row['PartidaM']],
+            ['x' => 100, 'y' => 87.8, 'value' => $row['LugarMatrimonio']." ".$row['FechaMatrimonio']],
+            ['x' => 61, 'y' => 98.4, 'value' => $row['ApellidoNombreEsposo']],
+            ['x' => 89.4, 'y' => 108.7, 'value' => '"'.$row['BautizadoParroquiaEsposo'].'"'],
+            ['x' => 77, 'y' => 118.5, 'value' => $row['PadreEsposo']],
+            ['x' => 77, 'y' => 123.8, 'value' => $row['MadreEsposo']],
+            ['x' => 65, 'y' => 135, 'value' => $row['ApellidoNombreEsposa']],
+            ['x' => 90.5, 'y' => 146, 'value' => $row['BautizadaParroquiaEsposa']],
+            ['x' => 77, 'y' => 156.6, 'value' => $row['PadreEsposa']],
+            ['x' => 77, 'y' => 161.1, 'value' => $row['MadreEsposa']],
+            ['x' => 77, 'y' => 171, 'value' => $row['Padrino']],
+            ['x' => 77, 'y' => 175.7, 'value' => $row['Madrina']],
+            ['x' => 95.3, 'y' => 183.9, 'value' => $row['LugarMatrimonioCivil']." ".$row['FechaMatrimonioCivil']],
+            ['x' => 88, 'y' => 191, 'value' => $row['OficialiaRegistroCivil']],
+            ['x' => 125.7, 'y' => 191, 'value' => $row['Libro']],
+            ['x' => 158, 'y' => 191, 'value' => $row['Partida']],
+            ['x' => 93, 'y' => 199, 'value' => $row['Certifica']],
+            ['x' => 64.6, 'y' => 207, 'value' => $row['NotasMarginales']],
+            ['x' => 27, 'y' => 244, 'value' => $row['LugarExpedido']]
+        ];
 
-        $pdf->SetXY(72.5, 65.9);
-        $pdf->Cell(0, 10, $row['Presbítero'], 0, 1);
-
-        $pdf->SetXY(176.5, 73.3);
-        $pdf->Cell(0, 10, $row['LibroM'], 0, 1);
-
-        $pdf->SetXY(41, 80);
-        $pdf->Cell(0, 10, $row['PaginaM'], 0, 1);
-
-        $pdf->SetXY(70, 80);
-        $pdf->Cell(0, 10, $row['PartidaM'], 0, 1);
-
-        $pdf->SetXY(100, 87.8);
-        $pdf->Cell(0, 10, $row['LugarMatrimonio']." ".$row['FechaMatrimonio'], 0, 1);
-
-        $pdf->SetXY(61, 98.4);
-        $pdf->Cell(0, 10, $row['ApellidoNombreEsposo'], 0, 1);
-
-        $pdf->SetXY(89.4, 108.7);
-        $pdf->Cell(0, 10, '"'.$row['BautizadoParroquiaEsposo'].'"', 0, 1);
-
-        $pdf->SetXY(77, 118.5);
-        $pdf->Cell(0, 10, $row['PadreEsposo'], 0, 1);
-
-        $pdf->SetXY(77, 123.8);
-        $pdf->Cell(0, 10, $row['MadreEsposo'], 0, 1);
-
-        $pdf->SetXY(65, 135);
-        $pdf->Cell(0, 10, $row['ApellidoNombreEsposa'], 0, 1);
-
-        $pdf->SetXY(90.5, 146);
-        $pdf->Cell(0, 10, $row['BautizadaParroquiaEsposa'], 0, 1);
-
-        $pdf->SetXY(77, 156.6);
-        $pdf->Cell(0, 10, $row['PadreEsposa'], 0, 1);
-
-        $pdf->SetXY(77, 161.1);
-        $pdf->Cell(0, 10, $row['MadreEsposa'], 0, 1);
-
-        $pdf->SetXY(77, 171);
-        $pdf->Cell(0, 10, $row['Padrino'], 0, 1);
-
-        $pdf->SetXY(77, 175.7);
-        $pdf->Cell(0, 10, $row['Madrina'], 0, 1);
-
-        $pdf->SetXY(95.3, 183.9);
-        $pdf->MultiCell(0, 10, $row['LugarMatrimonioCivil']." ".$row['FechaMatrimonioCivil']);
-        
-        $pdf->SetXY(88, 191);
-        $pdf->MultiCell(0, 10, $row['OficialiaRegistroCivil']);
-        
-        $pdf->SetXY(125.7, 191);
-        $pdf->MultiCell(0, 10, $row['Libro']);
-        
-        $pdf->SetXY(158, 191);
-        $pdf->MultiCell(0, 10, $row['Partida']);
-        
-        $pdf->SetXY(93, 199);
-        $pdf->MultiCell(0, 10, $row['Certifica']);
-        
-        $pdf->SetXY(64.6, 207);
-        $pdf->MultiCell(0, 10, $row['NotasMarginales']);
-
-        $pdf->SetXY(27, 244);
-        $pdf->Cell(0, 10, $row['LugarExpedido'], 0, 1);
+        foreach ($fields as $field) {
+            $pdf->SetXY($field['x'], $field['y']);
+            $pdf->Cell(0, 10,utf8_decode( $field['value']), 0, 1);
+        }
 
         $fechaExpedida = strtotime($row['FechaExpedida']);
         $dia = date('d', $fechaExpedida);
-        $mes = date('F', $fechaExpedida);
+        $mes = getMesEnEspanol(date('F', $fechaExpedida));
         $anio = date('Y', $fechaExpedida);
 
-        // Convertir el mes a español
-        $meses = array(
-            'January' => 'Enero',
-            'February' => 'Febrero',
-            'March' => 'Marzo',
-            'April' => 'Abril',
-            'May' => 'Mayo',
-            'June' => 'Junio',
-            'July' => 'Julio',
-            'August' => 'Agosto',
-            'September' => 'Septiembre',
-            'October' => 'Octubre',
-            'November' => 'Noviembre',
-            'December' => 'Diciembre'
-        );
-        $mes = $meses[$mes];
-
-        // Imprimir día
         $pdf->SetXY(53.5, 244);
         $pdf->Cell(10, 10, $dia, 0, 1);
-
-        // Imprimir mes
         $pdf->SetXY(76, 244);
         $pdf->Cell(30, 10, $mes, 0, 1);
-
-        // Imprimir año
         $pdf->SetXY(135.5, 244);
         $pdf->Cell(20, 10, $anio, 0, 1);
 
-
-
-        // Generar el PDF
         $pdf->Output('I', 'Registro_Matrimonio_' . $row['Id'] . '.pdf');
     } else {
         echo "Registro no encontrado.";
     }
-    
 } else {
     echo "ID de registro no proporcionado.";
 }

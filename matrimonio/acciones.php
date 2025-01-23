@@ -1,5 +1,13 @@
 <?php
+<<<<<<< HEAD
 include 'conexion.php';
+=======
+
+include '../conexion.php';
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+>>>>>>> 49a3c186a6ac46038411f92e4c7a84cce39f13de
 
 // Eliminar un registro del formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == "eliminar") {
@@ -25,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST['id'];
     $iglesia = $_POST['iglesia'];
-    $presbítero = $_POST['presbítero'];
+    $Presbitero = $_POST['Presbitero'];
     $libroM = $_POST['libroM'];
     $paginaM = $_POST['paginaM'];
     $partidaM = $_POST['partidaM'];
@@ -55,12 +63,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Verificar si se está actualizando o insertando
     if ($action == 'actualizar' && !empty($id)) {
         // Actualizar registro existente
-        $stmt = $conn->prepare("UPDATE Matrimonio SET Iglesia=?, Presbítero=?, LibroM=?, PaginaM=?, PartidaM=?, LugarMatrimonio=?, FechaMatrimonio=?, ApellidoNombreEsposo=?, BautizadoParroquiaEsposo=?, PadreEsposo=?, MadreEsposo=?, ApellidoNombreEsposa=?, BautizadaParroquiaEsposa=?, PadreEsposa=?, MadreEsposa=?, Padrino=?, Madrina=?, LugarMatrimonioCivil=?, FechaMatrimonioCivil=?, OficialiaRegistroCivil=?, Libro=?, Partida=?, Certifica=?, NotasMarginales=?, LugarExpedido=?, FechaExpedida=? WHERE Id=?");
-        $stmt->bind_param("ssssssssssssssssssssssssssi", $iglesia, $presbítero, $libroM, $paginaM, $partidaM, $lugarMatrimonio, $fechaMatrimonio, $apellidoNombreEsposo, $bautizadoParroquiaEsposo, $padreEsposo, $madreEsposo, $apellidoNombreEsposa, $bautizadaParroquiaEsposa, $padreEsposa, $madreEsposa, $padrino, $madrina, $lugarMatrimonioCivil, $fechaMatrimonioCivil, $oficialiaRegistroCivil, $libro, $partida, $certifica, $notasMarginales, $lugarExpedido, $fechaExpedida, $id);
+        $stmt = $conn->prepare("UPDATE Matrimonio SET Iglesia=?, Presbitero=?, LibroM=?, PaginaM=?, PartidaM=?, LugarMatrimonio=?, FechaMatrimonio=?, ApellidoNombreEsposo=?, BautizadoParroquiaEsposo=?, PadreEsposo=?, MadreEsposo=?, ApellidoNombreEsposa=?, BautizadaParroquiaEsposa=?, PadreEsposa=?, MadreEsposa=?, Padrino=?, Madrina=?, LugarMatrimonioCivil=?, FechaMatrimonioCivil=?, OficialiaRegistroCivil=?, Libro=?, Partida=?, Certifica=?, NotasMarginales=?, LugarExpedido=?, FechaExpedida=? WHERE Id=?");
+        $stmt->bind_param("ssssssssssssssssssssssssssi", $iglesia, $Presbitero, $libroM, $paginaM, $partidaM, $lugarMatrimonio, $fechaMatrimonio, $apellidoNombreEsposo, $bautizadoParroquiaEsposo, $padreEsposo, $madreEsposo, $apellidoNombreEsposa, $bautizadaParroquiaEsposa, $padreEsposa, $madreEsposa, $padrino, $madrina, $lugarMatrimonioCivil, $fechaMatrimonioCivil, $oficialiaRegistroCivil, $libro, $partida, $certifica, $notasMarginales, $lugarExpedido, $fechaExpedida, $id);
     } elseif ($action == 'insertar') {
         // Insertar nuevo registro
-        $stmt = $conn->prepare("INSERT INTO Matrimonio (Iglesia, Presbítero, LibroM, PaginaM, PartidaM, LugarMatrimonio, FechaMatrimonio, ApellidoNombreEsposo, BautizadoParroquiaEsposo, PadreEsposo, MadreEsposo, ApellidoNombreEsposa, BautizadaParroquiaEsposa, PadreEsposa, MadreEsposa, Padrino, Madrina, LugarMatrimonioCivil, FechaMatrimonioCivil, OficialiaRegistroCivil, Libro, Partida, Certifica, NotasMarginales, LugarExpedido, FechaExpedida) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssssssssssssssssssssss", $iglesia, $presbítero, $libroM, $paginaM, $partidaM, $lugarMatrimonio, $fechaMatrimonio, $apellidoNombreEsposo, $bautizadoParroquiaEsposo, $padreEsposo, $madreEsposo, $apellidoNombreEsposa, $bautizadaParroquiaEsposa, $padreEsposa, $madreEsposa, $padrino, $madrina, $lugarMatrimonioCivil, $fechaMatrimonioCivil, $oficialiaRegistroCivil, $libro, $partida, $certifica, $notasMarginales, $lugarExpedido, $fechaExpedida);
+        $stmt = $conn->prepare("INSERT INTO Matrimonio (Iglesia, Presbitero, LibroM, PaginaM, PartidaM, LugarMatrimonio, FechaMatrimonio, ApellidoNombreEsposo, BautizadoParroquiaEsposo, PadreEsposo, MadreEsposo, ApellidoNombreEsposa, BautizadaParroquiaEsposa, PadreEsposa, MadreEsposa, Padrino, Madrina, LugarMatrimonioCivil, FechaMatrimonioCivil, OficialiaRegistroCivil, Libro, Partida, Certifica, NotasMarginales, LugarExpedido, FechaExpedida) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssssssssssssssssssssss", $iglesia, $Presbitero, $libroM, $paginaM, $partidaM, $lugarMatrimonio, $fechaMatrimonio, $apellidoNombreEsposo, $bautizadoParroquiaEsposo, $padreEsposo, $madreEsposo, $apellidoNombreEsposa, $bautizadaParroquiaEsposa, $padreEsposa, $madreEsposa, $padrino, $madrina, $lugarMatrimonioCivil, $fechaMatrimonioCivil, $oficialiaRegistroCivil, $libro, $partida, $certifica, $notasMarginales, $lugarExpedido, $fechaExpedida);
     }
 
     $stmt->execute();
@@ -68,4 +76,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn->close();
 }
 
+<<<<<<< HEAD
+=======
+// Obtener datos para la tabla
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    $result = $conn->query("SELECT * FROM Matrimonio");
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>{$row['Id']}</td>";
+        echo "<td>{$row['Iglesia']}</td>";
+        echo "<td>{$row['Presbitero']}</td>";
+        echo "<td>{$row['LibroM']}</td>";
+        echo "<td>{$row['PaginaM']}</td>";
+        echo "<td>{$row['PartidaM']}</td>";
+        echo "<td>{$row['LugarMatrimonio']}</td>";
+        echo "<td>{$row['FechaMatrimonio']}</td>";
+        echo "<td>{$row['ApellidoNombreEsposo']}</td>";
+        echo "<td>{$row['BautizadoParroquiaEsposo']}</td>";
+        echo "<td>{$row['PadreEsposo']}</td>";
+        echo "<td>{$row['MadreEsposo']}</td>";
+        echo "<td>{$row['ApellidoNombreEsposa']}</td>";
+        echo "<td>{$row['BautizadaParroquiaEsposa']}</td>";
+        echo "<td>{$row['PadreEsposa']}</td>";
+        echo "<td>{$row['MadreEsposa']}</td>";
+        echo "<td>{$row['Padrino']}</td>";
+        echo "<td>{$row['Madrina']}</td>";
+        echo "<td>{$row['LugarMatrimonioCivil']}</td>";
+        echo "<td>{$row['FechaMatrimonioCivil']}</td>";
+        echo "<td>{$row['OficialiaRegistroCivil']}</td>";
+        echo "<td>{$row['Libro']}</td>";
+        echo "<td>{$row['Partida']}</td>";
+        echo "<td>{$row['Certifica']}</td>";
+        echo "<td>{$row['NotasMarginales']}</td>";
+        echo "<td>{$row['LugarExpedido']}</td>";
+        echo "<td>{$row['FechaExpedida']}</td>";
+        echo "<td><button class='btnEliminar' data-id='" . $row['Id'] . "'>Eliminar</button></td>";
+        echo "<td><input type='checkbox' class='seleccionarRegistro' value='" . $row['Id'] . "'></td>";
+        echo "</tr>";
+    }
+}
+
+$conn->close();
+>>>>>>> 49a3c186a6ac46038411f92e4c7a84cce39f13de
 ?>

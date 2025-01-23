@@ -1,5 +1,13 @@
 <?php
+<<<<<<< HEAD
 include 'conexion.php';
+=======
+
+include '../conexion.php';
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+>>>>>>> 49a3c186a6ac46038411f92e4c7a84cce39f13de
 
 // Eliminar un registro del formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == "eliminar") {
